@@ -17,6 +17,7 @@ def main():
     try:
         a, operator, b = input("Enter expression: ").split()
         a, b = float(a), float(b)
+        a, b = int(a), int(b)
         
         answer = 0
         if operator == '+':
