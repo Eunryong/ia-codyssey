@@ -14,10 +14,12 @@ def parse_factor(tokens):
     token = tokens.pop(0)
     if token == '(':
         number = parse_expression(tokens)
-        tokens.pop(0)
+        if not tokens or tokens[0] != ')':
+            raise ValueError
+        tokens.pop(0)  # 닫는 괄호 제거
         return number
     else:
-        return float(token)
+        return int(float(token))  # float 검증 후 int 변환
 
 def parse_term(tokens):
     number = parse_factor(tokens)
@@ -25,9 +27,9 @@ def parse_term(tokens):
         operator = tokens.pop(0)
         next_number = parse_factor(tokens)
         if operator == '*':
-            number *= next_number
+            number = multiply(number, next_number)
         else:
-            number /= next_number
+            number = divide(number, next_number)
     return number
 
 def parse_expression(tokens):
@@ -36,9 +38,9 @@ def parse_expression(tokens):
         op = tokens.pop(0)
         next_number = parse_term(tokens)
         if op == '+':
-            number += next_number
+            number = add(number, next_number)
         else:
-            number -= next_number
+            number = subtract(number, next_number)
     return number
 
 def is_number(token):
@@ -49,23 +51,42 @@ def is_number(token):
         return False
 
 def validate_tokens(tokens):
-    allowed = set('0123456789.+-*/()')
     prev_type = None  # 'number', 'operator', 'open_paren', 'close_paren'
+    paren_count = 0
+
     for token in tokens:
-        # 문자 검사
         if not (is_number(token) or token in ('+', '-', '*', '/', '(', ')')):
-            raise ValueError(f"허용되지 않는 토큰: '{token}'")
-        # 연속 숫자 검사
-        curr_type = 'number' if is_number(token) else (
+            raise ValueError
+
+        curr_type = (
+            'number' if is_number(token) else
             'open_paren' if token == '(' else
             'close_paren' if token == ')' else
             'operator'
         )
-        if prev_type == 'number' and curr_type == 'number':
-            raise ValueError("숫자가 연속해서 나올 수 없습니다.")
+
+        # 연속성 체크
+        if prev_type == 'number' and curr_type in ('number', 'open_paren'):
+            raise ValueError
         if prev_type == 'operator' and curr_type == 'operator':
-            raise ValueError("연산자가 연속해서 나올 수 없습니다.")
+            raise ValueError
+        if prev_type == 'open_paren' and curr_type == 'close_paren':
+            raise ValueError
+        if prev_type == 'close_paren' and curr_type in ('number', 'open_paren'):
+            raise ValueError
+
+        # 괄호 카운트
+        if token == '(':
+            paren_count += 1
+        elif token == ')':
+            paren_count -= 1
+            if paren_count < 0:
+                raise ValueError
+
         prev_type = curr_type
+
+    if paren_count != 0:
+        raise ValueError
 
 def calculator(args):
     validate_tokens(args)
@@ -75,12 +96,10 @@ def main():
     try:
         args = input().split()
         print("Result:", calculator(args))
-
-    except ValueError:
-        print("Invalid input")
-    
+    except ValueError as e:
+        print("Invalid input:", e)
     except ZeroDivisionError:
         print("Error: Division by zero.")
-    
+
 if __name__ == "__main__":
     main()
