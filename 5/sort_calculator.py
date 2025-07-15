@@ -14,7 +14,7 @@ def main():
         print("Sorted:", " ".join(map(str, sorted_numbers)))
 
     except ValueError:
-        print("Invalid input.")
+        print("Invalid input")
 
 if __name__ == "__main__":
     main()
