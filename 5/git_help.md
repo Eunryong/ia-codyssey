@@ -34,8 +34,6 @@ git merge: 다른 브랜치를 현재 브랜치에 병합
 
 git rebase: 다른 브랜치 위로 커밋을 재배치(커밋 기록 정리 시 사용)
 
-
-
 git reset: 현재 HEAD를 지정된 상태로 되돌림
 
 git switch: 다른 브랜치로 전환
