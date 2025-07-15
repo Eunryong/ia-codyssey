@@ -1,9 +1,8 @@
-from flask import Flask, request, Response, render_template
+from flask import Flask, request, Response, render_template, jsonify
 import os
 from io import BytesIO
 from gtts import gTTS
 
-DEFAULT_LANG = os.getenv('DEFAULT_LANG', 'ko')
 app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
@@ -14,15 +13,20 @@ def get():
 @app.route("/", methods=['POST'])
 def post():
     try:
-        data = request.get_json()
-        text = data.form.get('input_text')
+        text = request.form.get('input_text', '').strip()
+        lang = request.form.get('lang', 'ko')
 
-        lang = request.args.get('lang', data.form.get('lang'))
+        if not text:
+            return jsonify({"error": "텍스트가 비어 있습니다."}), 400
+
         fp = BytesIO()
-        gTTS(text, "com", lang).write_to_fp(fp)
-
+        tts = gTTS(text=text, lang=lang, tld="com")
+        tts.write_to_fp(fp)
+        fp.seek(0)
         return Response(fp.getvalue(), mimetype='audio/mpeg')
-    except
+    
+    except Exception as e:
+        return jsonify({"error": f"gTTS 변환 실패: {str(e)}"}), 500
 
 
 if __name__ == '__main__':
