@@ -10,6 +10,8 @@ def quick_sort(arr):
 def main():
     try:
         numbers = list(map(float, input().split()))
+        if not numbers:
+            raise ValueError
         sorted_numbers = quick_sort(numbers)
         print("Sorted:", " ".join(map(str, sorted_numbers)))
 
