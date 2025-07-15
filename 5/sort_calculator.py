@@ -11,7 +11,7 @@ def main():
     try:
         numbers = list(map(float, input().split()))
         sorted_numbers = quick_sort(numbers)
-        print("Sorted:", sorted_numbers)
+        print("Sorted:", " ".join(map(str, sorted_numbers)))
 
     except ValueError:
         print("Invalid input.")
