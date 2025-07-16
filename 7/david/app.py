@@ -52,7 +52,7 @@ def post():
             return render_template("index.html", error=str(ve)), 400
 
         except Exception as tts_error:
-            return render_template("index.html", error=str(ve)), 500
+            return render_template("index.html", error=str(tts_error)), 500
 
 
 
