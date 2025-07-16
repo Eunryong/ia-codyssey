@@ -35,6 +35,10 @@ def post():
             if not is_text_valid_for_lang(text, lang):
                 raise ValueError(f"입력된 텍스트가 선택한 언어({lang})와 일치하지 않습니다.")
 
+            log_line = f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] lang={lang}, text={text}\n"
+            with open("input_log.txt", "a", encoding="utf-8") as log_file:
+                log_file.write(log_line)
+
             fp = BytesIO()
             tts = gTTS(text=text, lang=lang, tld="com")
             tts.write_to_fp(fp)
