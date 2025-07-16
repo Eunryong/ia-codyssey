@@ -88,6 +88,9 @@ def validate_tokens(tokens):
     if paren_count != 0:
         raise ValueError
 
+    if prev_type == 'operator' or prev_type == 'open_paren':
+        raise ValueError
+
 def calculator(args):
     validate_tokens(args)
     return parse_expression(args)
@@ -96,8 +99,8 @@ def main():
     try:
         args = input().split()
         print("Result:", calculator(args))
-    except ValueError as e:
-        print("Invalid input:", e)
+    except ValueError:
+        print("Invalid input.")
     except ZeroDivisionError:
         print("Error: Division by zero.")
 
