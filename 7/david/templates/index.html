@@ -17,6 +17,10 @@
   <p style="color:red;">{{ error }}</p>
 {% endif %}
 
+{% if image %}
+  <img src="data:image/jpeg;base64,{{ image }}" alt="이미지" style="width:150px;">
+{% endif %}
+
 {% if audio %}
   <audio controls="" autoplay="">
     <source src="data:audio/mpeg;base64,{{ audio }}">
