@@ -21,7 +21,9 @@ def is_text_valid_for_lang(text: str, lang: str) -> bool:
     return re.match(patterns.get(lang, r".*"), text) is not None
 
 @app.route("/", methods=["GET", "POST"])
-def post():
+def get_post():
+    print(f"[PID {os.getpid()}] Handling request: {request.path}",flush=True)
+    
     if request.method == 'GET':
         return render_template('index.html', title="Flask Example", name="은룡")
     elif request.method == 'POST':
@@ -62,4 +64,4 @@ def post():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', 80)
+    app.run('0.0.0.0', 80, debug=True)
