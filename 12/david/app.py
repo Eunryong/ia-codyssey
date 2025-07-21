@@ -22,8 +22,8 @@ def is_text_valid_for_lang(text: str, lang: str) -> bool:
 
 @app.route("/", methods=["GET", "POST"])
 def get_post():
-    print(f"[PID {os.getpid()}] Handling request: {request.path}",flush=True)
-    
+    print(f"[PID {os.getpid()}] Handling request: {request.path}", flush=True)
+
     if request.method == 'GET':
         return render_template('index.html', title="Flask Example", name="은룡")
     elif request.method == 'POST':
