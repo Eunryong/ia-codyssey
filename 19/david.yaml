@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: david-pod
+    labels:
+        app: david
+spec:
+    containers:
+        - name: david
+          image: eunryong/david:v1.0
+          ports:
+              - containerPort: 80
