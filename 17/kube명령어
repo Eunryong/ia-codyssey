@@ -1,0 +1,5 @@
+kubectl run hellok8s --image=nginx --port=80
+kubectl get pods
+kubectl describe pod hellok8s
+kubectl port-forward pod/hellok8s 8080:80   # 종료 시 Ctrl+C
+kubectl delete pod hellok8s                # 선택사항
