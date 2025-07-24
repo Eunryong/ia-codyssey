@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: david-deployment
+    labels:
+        app: david
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: david
+    template:
+        metadata:
+            labels:
+                app: david
+        spec:
+            containers:
+                - name: david-container
+                  image: eunryong/david:v1.0
+                  ports:
+                      - containerPort: 80
